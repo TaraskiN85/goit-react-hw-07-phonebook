@@ -6,6 +6,7 @@ import { Filter } from "./Filter/Filter";
 import { addContact, deleteContact, filterContacts } from "../redux/contacts/contactsSlice";
 
 import css from './App.module.css';
+import axios from "axios";
 
 export const App = () => {
 
@@ -24,7 +25,14 @@ export const App = () => {
    
     dispatch(addContact(formData));
   })
-
+  
+  const fetchFromApi = async () => {
+    const fetched = await axios('https://65c27f44f7e6ea59682b75e0.mockapi.io/contacts', {
+      method: 'GET',
+      headers: {'content-type':'application/json'},
+    })
+    console.log(fetched.data)
+  }
   const handleSearch = searchData => dispatch(filterContacts(searchData));
 
   const handleDelete = name => dispatch(deleteContact(name))
@@ -38,6 +46,7 @@ export const App = () => {
       <h1 className={css.phonebookTitle}>Phonebook</h1>
       <PhonebookForm addUser={addUser} />
       <h2 className={css.contactsTitle}>Contacts</h2>
+      <button onClick={fetchFromApi}>download from API</button>
       <Filter
         value={filter}
         dataSearch={handleSearch}

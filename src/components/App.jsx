@@ -3,21 +3,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { PhonebookForm } from "./Form.jsx/PhonebookForm";
 import { Contacts } from "./Contacts/Contacts";
 import { Filter } from "./Filter/Filter";
-import { addContact, deleteContact, filterContacts } from "../redux/contacts/contactsSlice";
+import { addContact, deleteContact, fetchAllContacts, filterContacts } from "../redux/contacts/contactsSlice";
 
-import css from './App.module.css';
-import axios from "axios";
+import { useEffect } from "react";
+import { ContactsTitle, Phonebook, PhonebookTitle } from "./App.styled";
 
 export const App = () => {
 
-  const contacts = useSelector(state => state.contactsData.contacts)
+  const contacts = useSelector(state => state.contactsData.contacts.items)
   const filter = useSelector(state => state.contactsData.filter)
-  
   const dispatch = useDispatch();
 
-  const addUser = (formData => {
+  useEffect(() => {
+    dispatch(fetchAllContacts())
+  }, [dispatch])
+  
+  const addNewContact = (formData => {
     const isDuplicate = contacts.some(contact => contact.name === formData.name)
-    
     if (isDuplicate) {
       alert(`${formData.name} is already in contacts.`)
       return
@@ -26,32 +28,24 @@ export const App = () => {
     dispatch(addContact(formData));
   })
   
-  const fetchFromApi = async () => {
-    const fetched = await axios('https://65c27f44f7e6ea59682b75e0.mockapi.io/contacts', {
-      method: 'GET',
-      headers: {'content-type':'application/json'},
-    })
-    console.log(fetched.data)
-  }
   const handleSearch = searchData => dispatch(filterContacts(searchData));
 
-  const handleDelete = name => dispatch(deleteContact(name))
+  const handleDelete = contactId => dispatch(deleteContact(contactId))
 
   const filteredContacts = contacts.filter(contact => {
-    return contact.name.toLowerCase().includes(filter.toLowerCase()) || contact.number.includes(filter)
+    return contact.name.toLowerCase().includes(filter.toLowerCase()) || contact.phone.includes(filter)
   })
 
   return (
-    <div className={css.phonebook}>
-      <h1 className={css.phonebookTitle}>Phonebook</h1>
-      <PhonebookForm addUser={addUser} />
-      <h2 className={css.contactsTitle}>Contacts</h2>
-      <button onClick={fetchFromApi}>download from API</button>
+    <Phonebook>
+      <PhonebookTitle>Phonebook</PhonebookTitle>
+      <PhonebookForm addNewContact={addNewContact} />
+      <ContactsTitle>Contacts</ContactsTitle>
       <Filter
         value={filter}
         dataSearch={handleSearch}
       />
       <Contacts contacts={filteredContacts} deleteContact={handleDelete} />
-    </div>
+    </Phonebook>
   )
 }

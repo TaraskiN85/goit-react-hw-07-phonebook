@@ -1,4 +1,6 @@
-.phonebook {
+import styled from 'styled-components';
+
+export const Phonebook = styled.div`
   height: auto;
   display: flex;
   flex-direction: column;
@@ -7,16 +9,16 @@
   color: #010101;
   margin-left: 40px;
   max-width: 600px;
-}
+`;
 
-.phonebookTitle {
+export const PhonebookTitle = styled.h1`
   font-size: 1.8rem;
   align-items: left;
   font-weight: 700;
-}
+`;
 
-.contactsTitle {
+export const ContactsTitle = styled.h2`
   font-size: 1.6rem;
   font-weight: 600;
   padding-bottom: 12px;
-}
+`;

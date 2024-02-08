@@ -1,4 +1,4 @@
-import css from './PhonebookForm.module.css'
+import { Button, CheckLabel, Form, Input, Label, Span } from './PhonebookForm.styled'
 
 export const PhonebookForm = ({addNewContact}) => {
 
@@ -8,34 +8,32 @@ export const PhonebookForm = ({addNewContact}) => {
     const phone = e.currentTarget.elements.contactNumber.value
     const email = e.currentTarget.elements.contactEmail.value
     const favourite = e.currentTarget.elements.contactFavourite.checked
-    // const avatar = e.currentTarget.elements.contactAvatar.files[0] || null
-    // const createdAt = (new Date).toString()
 
     const profileData = { name, phone, email, favourite }
-    // console.log(profileData);
+
     addNewContact(profileData);
     e.currentTarget.reset()
   }
   
   return (
-    <form className={css.formContainer} onSubmit={handleFormSubmit}>
-      <label className={css.formLabel}>
-        <span className={css.labelTitle}>Name</span>
-        <input className={css.labelInput} type="text" name="contactName" placeholder='John Doe' required />
-      </label>
-      <label className={css.formLabel}>
-        <span className={css.labelTitle}>Number</span>
-        <input className={css.labelInput} type="tel" name="contactNumber" placeholder='555-55-55' required />
-      </label>
-      <label className={css.formLabel}>
-        <span className={css.labelTitle}>Email</span>
-        <input className={css.labelInput} type="email" name="contactEmail" placeholder='mail@example.com' required />
-      </label>
-      <label className={css.formLabel}>
-        <span className={css.labelTitle}>Is Favourite?</span>
-        <input className={css.labelCheckbox} type="checkbox" name="contactFavourite" />
-      </label>
-      <button className={css.button} type='submit'>Add Contact</button>
-    </form>
+    <Form onSubmit={handleFormSubmit}>
+      <Label>
+        <Span>Name</Span>
+        <Input type="text" name="contactName" placeholder='John Doe' required />
+      </Label>
+      <Label>
+        <Span>Number</Span>
+        <Input type="tel" name="contactNumber" placeholder='555-55-55' required />
+      </Label>
+      <Label>
+        <Span>Email</Span>
+        <Input type="email" name="contactEmail" placeholder='mail@example.com' required />
+      </Label>
+      <CheckLabel>
+        <Span>Is Favourite?</Span>
+        <Input type="checkbox" name="contactFavourite" />
+      </CheckLabel>
+      <Button type='submit'>Add Contact</Button>
+    </Form>
   )
 }

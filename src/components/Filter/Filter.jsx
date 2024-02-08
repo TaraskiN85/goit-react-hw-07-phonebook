@@ -1,4 +1,4 @@
-import css from './Filter.module.css'
+import { SearchField } from './Filter.styled'
 
 export const Filter = ({ dataSearch }) => {
   
@@ -8,10 +8,7 @@ export const Filter = ({ dataSearch }) => {
   }
 
   return (
-    <div>
-      <p className={css.filterLabel}>Find contacts by name</p>
-      <input className={css.filterSearchField} type='search'
-        onChange={handleSearch}></input>
-    </div>
+      <SearchField type='search'
+        onChange={handleSearch}></SearchField>
   )
 }

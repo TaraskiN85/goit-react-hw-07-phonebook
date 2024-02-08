@@ -1,17 +1,20 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { PhonebookForm } from "./Form.jsx/PhonebookForm";
 import { Contacts } from "./Contacts/Contacts";
 import { Filter } from "./Filter/Filter";
-import { addContact, deleteContact, fetchAllContacts, filterContacts } from "../redux/contacts/contactsSlice";
 
-import { useEffect } from "react";
-import { ContactsTitle, Phonebook, PhonebookTitle } from "./App.styled";
+import { addContact, deleteContact, fetchAllContacts, filterContacts } from "../redux/contacts/contactsSlice";
+import { selectFilter, selectFilteredContacts } from "../redux/contacts/contactsSlice.selectors";
+
+import { Container, Header, Main, Phonebook, PhonebookTitle, Title } from "./App.styled";
 
 export const App = () => {
 
-  const contacts = useSelector(state => state.contactsData.contacts.items)
-  const filter = useSelector(state => state.contactsData.filter)
+  const filter = useSelector(selectFilter)
+  const filteredContacts = useSelector(selectFilteredContacts)
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -19,11 +22,7 @@ export const App = () => {
   }, [dispatch])
   
   const addNewContact = (formData => {
-    const isDuplicate = contacts.some(contact => contact.name === formData.name)
-    if (isDuplicate) {
-      alert(`${formData.name} is already in contacts.`)
-      return
-    }
+
    
     dispatch(addContact(formData));
   })
@@ -32,20 +31,30 @@ export const App = () => {
 
   const handleDelete = contactId => dispatch(deleteContact(contactId))
 
-  const filteredContacts = contacts.filter(contact => {
-    return contact.name.toLowerCase().includes(filter.toLowerCase()) || contact.phone.includes(filter)
-  })
-
   return (
     <Phonebook>
-      <PhonebookTitle>Phonebook</PhonebookTitle>
-      <PhonebookForm addNewContact={addNewContact} />
-      <ContactsTitle>Contacts</ContactsTitle>
-      <Filter
-        value={filter}
-        dataSearch={handleSearch}
-      />
-      <Contacts contacts={filteredContacts} deleteContact={handleDelete} />
+      <Header>
+        <Container>
+        <PhonebookTitle>Phonebook</PhonebookTitle>
+        </Container>
+      </Header>
+      <Container>
+        <Main>
+          <section>
+            <Title>Search Contacts</Title>
+            <Filter
+              value={filter}
+              dataSearch={handleSearch}
+            />
+            <Title>Add New Contact</Title>
+            <PhonebookForm addNewContact={addNewContact} />
+          </section>
+          <section>
+            <Title>Contacts List</Title>
+            <Contacts contacts={filteredContacts} deleteContact={handleDelete} />
+          </section>
+        </Main>
+      </Container>
     </Phonebook>
   )
 }

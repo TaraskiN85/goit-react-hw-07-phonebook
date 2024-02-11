@@ -1,10 +1,13 @@
 import React from 'react'
 import { Li } from './Contact.styled'
+import { useDispatch } from 'react-redux'
+import { deleteContact } from '../../redux/contacts/contactsSlice'
 
-const Contact = ({ contactData, deleteContact }) => {
-  
-  const handleDeleteContact = (e) => {
-    deleteContact(contactData.id)
+const Contact = ({ contactData }) => {
+  const dispatch = useDispatch()
+
+  const handleDeleteContact = () => {
+    dispatch(deleteContact(contactData.id))
   }
 
   return (

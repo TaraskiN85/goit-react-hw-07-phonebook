@@ -3,8 +3,8 @@ import {
   addContactRequest,
   allContactsRequest,
   deleteContactRequest,
-} from 'components/services/api';
-import { STATUSES } from 'components/services/constants';
+} from 'services/api';
+import { STATUSES } from 'services/constants';
 
 const initialState = {
   contacts: {
@@ -58,7 +58,6 @@ const pendingCallback = state => {
   state.error = null;
 };
 const errorCallback = (state, action) => {
-  console.log(action);
   state.isLoading = false;
   state.status = STATUSES.error;
   state.error = action.payload;
